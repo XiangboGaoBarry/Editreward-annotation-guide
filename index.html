@@ -866,7 +866,9 @@
                         isSyncing = true;
                         videos.forEach(other => {
                             if (other !== video) {
-                                other.currentTime = video.currentTime;
+                                if (Math.abs(other.currentTime - video.currentTime) > 0.1) {
+                                    other.currentTime = video.currentTime;
+                                }
                             }
                         });
                         isSyncing = false;
