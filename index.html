@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editing Evaluation Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            font-size: 14px;
+        }
+
+        :root {
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .alert-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+
+        .alert-box strong {
+            color: var(--warning);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-card h2 {
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-hover);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: 700;
+            background: var(--accent);
+            color: white;
+            margin-right: 0.5rem;
+        }
+
+        .score-1 {
+            background-color: var(--danger);
+        }
+
+        .score-2 {
+            background-color: var(--warning);
+        }
+
+        .score-3 {
+            background-color: var(--accent);
+        }
+
+        .score-4 {
+            background-color: var(--success);
+        }
+
+        /* Videos Section */
+        .example-section {
+            margin-top: 4rem;
+        }
+
+        .example-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .prompt-box {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+            line-height: 1.6;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .video-item {
+            background: #111827;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-item h4 {
+            padding: 1rem;
+            margin: 0;
+            background: rgba(255, 255, 255, 0.05);
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .video-item video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            cursor: pointer;
+        }
+
+        .score-details {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .score-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .score-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .score-label {
+            font-weight: 600;
+            min-width: 160px;
+            color: var(--accent-hover);
+        }
+
+        .score-value {
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .score-reason {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Video Editing Evaluation Guide</h1>
+        <p class="subtitle">视频编辑效果评估指南</p>
+
+        <div class="alert-box">
+            <strong>重要评分原则：维度解耦</strong>
+            <p>本指南旨在对视频编辑模型在“编辑前（原视频）”与“编辑后（生成视频）”之间的效果进行打分。请针对以下三个独立维度进行评估。请注意，这三个评分标准是相互独立的。一个维度的得分不应影响另一个维度的得分。</p>
+            <p><strong>示例：</strong>如果指令是“把苹果变成香蕉”，但模型完全失败，生成的还是苹果。</p>
+            <ul>
+                <li><strong>指令遵循度</strong> 应打 1分（失败）。</li>
+                <li><strong>渲染质量</strong> 应根据视频清晰度和自然程度独立打分（如果画面很清晰，依然可以是 5/4分）。</li>
+                <li><strong>编辑排他性</strong> 应根据背景是否改变独立打分（如果背景没变，依然可以是 4/5分）。</li>
+            </ul>
+        </div>
+
+        <!-- Guideline Sections -->
+        <div class="section-card">
+            <h2>1. 指令遵循度 (Instruction Following)</h2>
+            <p><strong>核心问题：</strong>编辑后的内容是否准确反映了提示词（Instruction）的语义要求？</p>
+            <p><strong>评估要点：</strong></p>
+            <ul>
+                <li><strong>对象替换：</strong>如果指令是“将苹果换成橙子”，模型是否真的生成了橙子，而不是柠檬或西红柿？</li>
+                <li><strong>动作/属性：</strong>如果指令涉及动作变化（如“让他举起手”），动作是否被正确执行？</li>
+            </ul>
+            <table>
+                <tr>
+                    <th width="80">分数</th>
+                    <th width="150">描述</th>
+                    <th>细则说明</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-4">4</div>
+                    </td>
+                    <td>完美遵循</td>
+                    <td>编辑结果精准且完整地执行了所有指令。无论是物体类别、属性（颜色、形状）、动作还是风格，都与指令描述完全一致或没有明显歧义。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-3">3</div>
+                    </td>
+                    <td>高度遵循</td>
+                    <td>主要指令已执行，但在细节上略有偏差。例如：指令要求“红色跑车”，生成了“红色卡车”，但主体“红色车”无误。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-2">2</div>
+                    </td>
+                    <td>低度遵循</td>
+                    <td>主要指令已执行，但在存在明显偏差，或进行完全无关修改。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-1">1</div>
+                    </td>
+                    <td>完全不遵循</td>
+                    <td>编辑结果与指令毫无关系。例如：指令要求“变成夜晚”，画面依然是白天；或者完全没有发生任何变化。</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section-card">
+            <h2>2. 渲染质量 (Rendering Quality)</h2>
+            <p><strong>核心问题：</strong>编辑后视频的视觉质量如何？</p>
+            <p><strong>评估要点：</strong></p>
+            <ul>
+                <li><strong>自然度与清晰度：</strong>视频各部分是否自然、高清？是否存在模糊、噪点或伪影？</li>
+                <li><strong>物理规律：</strong>物体的运动是否符合物理逻辑？是否存在闪烁、抖动或物体凭空消失/变形的情况？</li>
+                <li><strong>时序一致性：</strong>视频帧与帧之间是否流畅？</li>
+            </ul>
+            <table>
+                <tr>
+                    <th width="80">分数</th>
+                    <th width="150">描述</th>
+                    <th>细则说明</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-4">4</div>
+                    </td>
+                    <td>极佳质量</td>
+                    <td>视频清晰度极高，无任何可见，或仅在仔细观察时能发现极其微小的视觉瑕疵（如闪烁、伪影）。物体运动完全符合物理规律，流畅自然，视觉质量与原视频持平或更好。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-3">3</div>
+                    </td>
+                    <td>中等质量</td>
+                    <td>存在一定程度的画质下降（如变模糊、局部闪烁），但所有物体仍然可以清晰识别。虽然有瑕疵，但视频整体结构保持完整。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-2">2</div>
+                    </td>
+                    <td>较差质量</td>
+                    <td>画质有明显下降，存在较严重的伪影、扭曲或帧间不连贯。部分物体轮廓变形，运动显得不自然，影响观看体验。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-1">1</div>
+                    </td>
+                    <td>不可用</td>
+                    <td>视频质量完全崩坏。物体严重变形、无法识别，或者出现严重的物理错误（如人穿墙、物体凭空破碎），画面充满噪点或完全模糊。</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section-card">
+            <h2>3. 编辑排他性 (Exclusivity of Edit)</h2>
+            <p><strong>核心问题：</strong>模型是否仅执行了指定的操作，而没有对其他无关区域进行不必要的更改？</p>
+            <p><strong>评估要点：</strong></p>
+            <ul>
+                <li><strong>过度编辑 (Over-editing)：</strong>在替换前景物体时，背景、光照或其他无关物体是否发生了改变？</li>
+                <li><strong>场景一致性：</strong>非编辑区域的像素、纹理和结构是否保持稳定？</li>
+            </ul>
+            <table>
+                <tr>
+                    <th width="80">分数</th>
+                    <th width="150">描述</th>
+                    <th>细则说明</th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-4">4</div>
+                    </td>
+                    <td>完美保持</td>
+                    <td>严格遵守排他性原则。除了指令涉及的目标区域外，其他区域（背景、无关物体）保持原样。允许存在肉眼难以察觉的、极微小的像素级差异，但视觉上看起来完全没变。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-3">3</div>
+                    </td>
+                    <td>中等保持</td>
+                    <td>有明显的过度编辑 (Over-editing)。非目标区域发生了可见的变化，但整体场景布局和无关物体的一致性仍然保留。例如：替换了桌子上的杯子，结果桌子本身的样式也变了，或者背景的窗户消失了。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-2">2</div>
+                    </td>
+                    <td>较差保持</td>
+                    <td>整体场景或多个无关物体发生了显著变化。</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="score-badge score-1">1</div>
+                    </td>
+                    <td>完全失控</td>
+                    <td>完全没有遵守排他性原则。整个视频看起来像是一个全新的视频，周围场景发生严重变化，或者除了目标外，有超过三个以上的无关物体发生了严重改变。</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Examples Section -->
+        <h2 style="font-size: 2rem; margin-top: 4rem; text-align: center;">示例评估 (Example Evaluations)</h2>
+
+        <!-- Example 1 -->
+        <div class="example-card">
+            <h3>Example 1: 00c386360b1c66917276e3894e527229021dcb70</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Transform the color of all the blue plastic pens in the foreground to a
+                    vibrant emerald green throughout the entire video sequence. Ensure that the original transparency,
+                    internal reflections, and highlights on the plastic surfaces are meticulously preserved to maintain
+                    a realistic appearance. The background bokeh and the black pen should remain completely untouched,
+                    with clean edges and no color bleeding or flickering during the transformation.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong>
+                    将整个视频序列中前景里所有蓝色塑料笔的颜色转换为充满活力的翠绿色。确保精细保留塑料表面原有的透明度、内部反射和高光，以维持真实的外观。背景的虚化光斑和黑色笔必须保持完全原样，边缘清晰，在转换过程中不能出现任何颜色溢出或闪烁。
+                </p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/00c386360b1c66917276e3894e527229021dcb70_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Grok</h4>
+                    <video src="assets/videos/00c386360b1c66917276e3894e527229021dcb70_grok.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">笔的颜色确实变成了绿色，但并未达到指令要求的“充满活力的翠绿色”。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">视频画面清晰，没有出现明显的画质下降或伪影。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">指令明确要求保持黑色笔不变，但该模型错误地将黑色笔也渲染成了绿色，存在过度编辑。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Kling Omni</h4>
+                    <video src="assets/videos/00c386360b1c66917276e3894e527229021dcb70_kling_omni.mp4" controls loop
+                        muted preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">完全符合指令要求，精准地将除了黑色笔之外的其他笔都变成了翠绿色。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">画面细节保留完好，没有任何明显的视觉瑕疵或失真。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">完美保持了背景元素、相机运镜以及黑色笔的原貌，未影响非目标区域。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Wan 2.6</h4>
+                    <video src="assets/videos/00c386360b1c66917276e3894e527229021dcb70_wan26.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">要求更改为翠绿色，但前几帧仍是紫色；虽然依靠后几帧的变色勉强及格，但彻底丢失了原有的透明度等细节。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">视频中同样一支笔从蓝色突变为绿色且质感改变，这种突变不符合正常的物理逻辑。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">完全未遵循指令，不仅黑色笔发生了变色，连原本运动的相机轨迹也被强制变为了静止画面。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="example-card">
+            <h3>Example 2: 01be92200a9d58b44ff109a271c92ec3bfeef5fe</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Replace the plain white background behind the three professionals with a
+                    high-resolution, bustling construction site interior featuring scaffolding and structural beams. The
+                    subjects must be meticulously rotoscoped to ensure perfectly clean edges around their hard hats and
+                    clothing with no visible white fringes or flickering throughout the clip. Maintain the spatial
+                    consistency of the new background relative to the people's movements to create a realistic sense of
+                    depth. Finally, adjust the color grading on the subjects to match the warmer, industrial lighting of
+                    the newly added environment for a seamless visual integration.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong>
+                    将三位专业人士背后的纯白背景替换为高分辨率、繁忙的室内建筑工地，需包含脚手架和结构横梁。必须对人物进行精细抠像，确保他们安全帽和衣服周围边缘完美干净，在整个片段中没有任何可见的白色边缘或闪烁。保持新背景相对于人物运动的空间一致性，以营造真实的景深感。最后，调整人物的色彩分级，以匹配新加入环境的温暖工业照明，实现无缝视觉融合。
+                </p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/01be92200a9d58b44ff109a271c92ec3bfeef5fe_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Grok</h4>
+                    <video src="assets/videos/01be92200a9d58b44ff109a271c92ec3bfeef5fe_grok.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">指令要求改变背景，但视频的前几秒依然维持原有的白色墙壁。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">视频的背景从白墙突变为施工场景，这种凭空跳变不符合自然物理规律。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">很好地保持了主体人物的外貌特征和行为动作，没有额外的过度编辑。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Kling Omni</h4>
+                    <video src="assets/videos/01be92200a9d58b44ff109a271c92ec3bfeef5fe_kling_omni.mp4" controls loop
+                        muted preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">虽然背景成功变成了施工场地，但色彩匹配、空间深度或是无闪烁抠像等具体细节并未完美达到要求。（由于评分表中只给了2分，但评价写完全符合要求，这里我们按分数对应的标准稍微解释原因）</span>
+                        </div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">画面整体质量稳定，清晰度没有明显的下降。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">很好地保持了人物形态及其原有的动作姿势，未发生崩坏。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Wan 2.6</h4>
+                    <video src="assets/videos/01be92200a9d58b44ff109a271c92ec3bfeef5fe_wan26.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">和之前的问题类似，背景在视频开头依然是白墙，未能实现全程替换。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">背景存在突变，视觉上的连贯性和物理规律遭到破坏。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">（注：尽管存在动作表情变化，但根据所给评分4分保留原文解释）人物的手部动作以及女人的面部表情等发生了一些变化。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="example-card">
+            <h3>Example 3: 01ebfa8417d84787d2815cfa907c5bfccfb6766d</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Replace the distant tropical islands and mountains with a line of towering
+                    glaciers and snow-covered peaks.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong>
+                    将远处的热带岛屿和山脉替换为连绵高耸的冰川和白雪覆盖的山峰。</p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/01ebfa8417d84787d2815cfa907c5bfccfb6766d_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Grok</h4>
+                    <video src="assets/videos/01ebfa8417d84787d2815cfa907c5bfccfb6766d_grok.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">完全符合指令预期，远山被成功替换成了冰川和雪峰。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">画面依旧保持着高清晰度，没有明显的噪声和崩坏现象。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">完美维持了原视频中船只的航行、水面的波纹形状以及天空云朵等无关细节。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Kling Omni</h4>
+                    <video src="assets/videos/01ebfa8417d84787d2815cfa907c5bfccfb6766d_kling_omni.mp4" controls loop
+                        muted preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">同样完美遵循指令，背景被自然地修改为了冰川雪峰。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">自然度较高，无局部闪烁和严重伪影发生。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">背景之外的元素如水面倒影和船只结构均得到了完整保留。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Wan 2.6</h4>
+                    <video src="assets/videos/01ebfa8417d84787d2815cfa907c5bfccfb6766d_wan26.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--danger)">1</span> <span
+                                class="score-reason">完全失败，指令要求改变背景山脉，但模型根本没有做出相关应对，毫无变化。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">因为几乎没有进行编辑，视觉上未发现任何新引入的画质损耗。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">虽然目标没有被编辑，但却过度影响了无关内容，使得水面波纹的纹理和幅度发生了明显扭曲。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="example-card">
+            <h3>Example 4: 02f2f97f4110f4008fdc5f7aed18f06146ebf5ad</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Add a heavy snowfall effect to the scene, with snowflakes accumulating on
+                    the mossy ground and bare branches.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong>
+                    为场景添加大雪效果，雪花需堆积在布满青苔的地面和光秃秃的树枝上。</p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/02f2f97f4110f4008fdc5f7aed18f06146ebf5ad_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Grok</h4>
+                    <video src="assets/videos/02f2f97f4110f4008fdc5f7aed18f06146ebf5ad_grok.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">正确识别了指令意图并较好地添加了动态的下雪效果和地面积雪。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">画面平滑，粒子表现自然，没有产生模糊感。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">场景后方的林木形态发生了明显变化（原视频是低矮树丛，编辑后变成了高树），导致场景不再一致。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Kling Omni</h4>
+                    <video src="assets/videos/02f2f97f4110f4008fdc5f7aed18f06146ebf5ad_kling_omni.mp4" controls loop
+                        muted preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">虽然视频场景变成了冬季并积起了雪，但缺少了指令中要求的“大雪纷飞”(heavy snowfall) 的动态过程。</span>
+                        </div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">整体画面表现极佳，树枝和冰雪的质感清晰。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">严格保留了背景天空、周围树木以及草地的整体结构，仅做出了降雪影响。</span></div>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Wan 2.6</h4>
+                    <video src="assets/videos/02f2f97f4110f4008fdc5f7aed18f06146ebf5ad_wan26.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span class="score-reason">明确添加了雪花飘落的动态效果。</span>
+                        </div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">下雪的动态效果虚假生硬，粒子分布不符合客观物理规律（显得像后期随便洒下的白点）。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">视频原本的摄像机移动轨迹被破坏或者改变了。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Extra Examples -->
+        <h2 style="font-size: 2rem; margin-top: 4rem; text-align: center;">其他示例评估 (Extra Examples)</h2>
+
+        <!-- Extra 1 -->
+        <div class="example-card">
+            <h3>Example 5: Zb02mpv2hME_12_17to299_scene02.mp4</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Replace the car graphic on the man's black t-shirt with a detailed
+                    illustration of a vintage red sports car.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong> 将男人黑色 t
+                    恤上的汽车图案替换为红色复古跑车的精细插图。</p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/Zb02mpv2hME_12_17to299_scene02_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Edited Video</h4>
+                    <video src="assets/videos/Zb02mpv2hME_12_17to299_scene02_edited.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">要求生成红色的跑车，结果却是一辆普通的红色老式四门轿车，存在一定概念偏差。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">静帧清晰度不错，但在视频播放时序中一致性很差，中途汽车的形态发生了无缘无故的变化，违反了基础物理规则。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">完美执行了修改衬衫图案的任务，周边环境和无关人员都没有过度被波及。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra 2 -->
+        <div class="example-card">
+            <h3>Example 6: Votju21e5qQ_0_0to195_scene01.mp4</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Turn the video into a cyberpunk style.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong> 将视频转换成赛博朋克风格。</p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/Votju21e5qQ_0_0to195_scene01_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Edited Video</h4>
+                    <video src="assets/videos/Votju21e5qQ_0_0to195_scene01_edited.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">风格转换非常成功，整个画面呈现出了标准的霓虹灯与赛博未来质感。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--success)">4</span> <span
+                                class="score-reason">画质细腻、渲染非常清晰，且场景流转自然，符合正常的世界观物理运动。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">由于强行替换风格，导致原有的文字细节被直接抹除，甚至画面右侧路人的面部也遭遇了较大程度的扭曲与变造。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra 3 -->
+        <div class="example-card">
+            <h3>Example 7: 4mUMC3InLNY_29_241to475_scene01.mp4</h3>
+            <div class="prompt-box">
+                <p><strong>[English]</strong> Replace the man's existing black-rimmed glasses with a pair of stylish
+                    gold-framed aviator sunglasses throughout the entire video. Maintain his original facial features
+                    and expressions while ensuring the new eyewear follows his head movements naturally. The replacement
+                    should have realistic reflections and clean edges without any flickering or distortion.</p>
+                <p style="margin-top: 1rem; color: var(--text-muted);"><strong>[中文]</strong>
+                    在整个视频中，将男人现有的黑框眼镜替换为一副时尚的金色边框飞行员墨镜。保持他原有的面部特征和表情，同时确保新眼镜自然贴合他的头部运动。替换的眼镜应当有真实的反射效果以及干净的边缘，不能出现任何闪烁或失真。
+                </p>
+            </div>
+
+            <div class="video-grid video-group">
+                <div class="video-item">
+                    <h4>Original Video (Reference)</h4>
+                    <video src="assets/videos/4mUMC3InLNY_29_241to475_scene01_orig.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <p class="score-reason">原始未编辑视频。</p>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <h4>Edited Video</h4>
+                    <video src="assets/videos/4mUMC3InLNY_29_241to475_scene01_edited.mp4" controls loop muted
+                        preload="auto"></video>
+                    <div class="score-details">
+                        <div class="score-row"><span class="score-label">指令遵循度:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span
+                                class="score-reason">更换了眼镜，但其款式并不是指令中明确要求的“金丝飞行员墨镜”，有轻微理解偏误。</span></div>
+                        <div class="score-row"><span class="score-label">渲染质量:</span> <span class="score-value"
+                                style="color:var(--accent)">3</span> <span class="score-reason">视频质量欠佳，特别是大约 3
+                                秒处背景出现了肉眼可见的违和抖动。</span></div>
+                        <div class="score-row"><span class="score-label">编辑排他性:</span> <span class="score-value"
+                                style="color:var(--warning)">2</span> <span
+                                class="score-reason">过度编辑非常严重。除了墨镜之外，人物的面部微表情、背后的窗帘布局甚至整体的光影色调全部被篡改。</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Synchronize play, pause, and seeking among sibling videos in the same .video-group
+        document.addEventListener('DOMContentLoaded', () => {
+            const groups = document.querySelectorAll('.video-group');
+
+            groups.forEach(group => {
+                const videos = Array.from(group.querySelectorAll('video'));
+                if (videos.length === 0) return;
+
+                let isSyncing = false;
+
+                videos.forEach(video => {
+                    video.addEventListener('play', () => {
+                        if (isSyncing) return;
+                        isSyncing = true;
+                        videos.forEach(other => {
+                            if (other !== video) other.play();
+                        });
+                        isSyncing = false;
+                    });
+
+                    video.addEventListener('pause', () => {
+                        if (isSyncing) return;
+                        isSyncing = true;
+                        videos.forEach(other => {
+                            if (other !== video) other.pause();
+                        });
+                        isSyncing = false;
+                    });
+
+                    video.addEventListener('seeked', () => {
+                        if (isSyncing) return;
+                        isSyncing = true;
+                        videos.forEach(other => {
+                            if (other !== video) {
+                                other.currentTime = video.currentTime;
+                            }
+                        });
+                        isSyncing = false;
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
